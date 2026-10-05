@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahesh Daily Timetable</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: white;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .date {
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 25px;
+        }
+
+        .progress-card {
+            background: #1e293b;
+            padding: 22px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+        }
+
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        #percentage {
+            color: #22c55e;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .bar {
+            width: 100%;
+            height: 14px;
+            background: #334155;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .fill {
+            width: 0%;
+            height: 100%;
+            background: #22c55e;
+            transition: 0.4s;
+        }
+
+        .table {
+            background: #1e293b;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 170px 1fr 70px;
+            align-items: center;
+            padding: 18px 20px;
+            border-bottom: 1px solid #334155;
+        }
+
+        .row:last-child {
+            border-bottom: none;
+        }
+
+        .header {
+            background: #334155;
+            font-weight: bold;
+        }
+
+        .time {
+            color: #38bdf8;
+            font-weight: bold;
+        }
+
+        .task {
+            font-size: 17px;
+        }
+
+        .check {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+        }
+
+        .done {
+            text-decoration: line-through;
+            color: #64748b;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+
+            .row {
+                grid-template-columns: 120px 1fr 45px;
+                padding: 15px 10px;
+            }
+
+            .task {
+                font-size: 15px;
+            }
+
+            .time {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🔥 Mahesh's Daily Timetable</h1>
+
+    <div class="date" id="date"></div>
+
+    <div class="progress-card">
+
+        <div class="progress-top">
+            <span>Today's Progress</span>
+            <span id="percentage">0%</span>
+        </div>
+
+        <div class="bar">
+            <div class="fill" id="fill"></div>
+        </div>
+
+    </div>
+
+    <div class="table">
+
+        <div class="row header">
+            <div>TIME</div>
+            <div>ACTIVITY</div>
+            <div>DONE</div>
+        </div>
+
+        <div class="row">
+            <div class="time">6:00 – 6:30</div>
+            <div class="task">🏃 Workout</div>
+            <input type="checkbox" class="check">
+        </div>
+
+        <div class="row">
+            <div class="time">6:30 – 7:30</div>
+            <div class="task">🚿 Ready + Breakfast</div>
+            <input type="checkbox" class="check">
+        </div>
+
+        <div class="row">
+            <div class="time">7:30 – 8:00</div>
+            <div class="task">🎒 College Travel</div>
+            <input type="checkbox" class="check">
+        </div>
+
+        <div class="row">
+            <div class="time">8:00 – 5:00</div>
+            <div class="task">🏫 College</div>
+            <input type="checkbox" class="check">
+        </div>
+
+        <div class="row">
+            <div class="time">5:00 – 5:45</div>
+            <div class="task">🏠 Travel + Rest</div>
+            <input type="checkbox" class="check">
+        </div>
+
+        <div class="row">
+            <div class="time">5:45 – 7:45</div>
+            <div class="task">🎬 Editing</div>
+            <input type="checkbox" class="check">
+        </div>
+
+        <div class="row">
+            <div class="time">7:45 – 8:15</div>
+            <div class="task">🍽️ Dinner</div>
+            <input type="checkbox" class="check">
+        </div>
+
+        <div class="row">
+            <div class="time">8:15 – 9:45</div>
+            <div class="task">📚 College Study</div>
+            <input type="checkbox" class="check">
+        </div>
+
+        <div class="row">
+            <div class="time">9:45 – 11:00</div>
+            <div class="task">🎬 Editing</div>
+            <input type="checkbox" class="check">
+        </div>
+
+        <div class="row">
+            <div class="time">11:00 – 11:15</div>
+            <div class="task">🎒 Tomorrow Preparation</div>
+            <input type="checkbox" class="check">
+        </div>
+
+        <div class="row">
+            <div class="time">11:15 PM</div>
+            <div class="task">😴 Sleep</div>
+            <input type="checkbox" class="check">
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    const checks = document.querySelectorAll(".check");
+    const percentage = document.getElementById("percentage");
+    const fill = document.getElementById("fill");
+
+    function updateProgress() {
+
+        let completed = 0;
+
+        checks.forEach((check) => {
+
+            if (check.checked) {
+                completed++;
+
+                check.parentElement.querySelector(".task")
+                    .classList.add("done");
+
+            } else {
+
+                check.parentElement.querySelector(".task")
+                    .classList.remove("done");
+            }
+
+        });
+
+        let percent = Math.round(
+            (completed / checks.length) * 100
+        );
+
+        percentage.innerText = percent + "%";
+        fill.style.width = percent + "%";
+    }
+
+    checks.forEach((check) => {
+        check.addEventListener("change", updateProgress);
+    });
+
+    const today = new Date();
+
+    document.getElementById("date").innerText =
+        today.toLocaleDateString("en-IN", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        });
+
+</script>
+
+</body>
+</html>
